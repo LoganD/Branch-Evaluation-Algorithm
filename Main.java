@@ -13,89 +13,66 @@ import java.util.Properties;
 /* ga */
 /* sources : http://docs.oracle.com/javase/tutorial/essential/io/charstreams.html */
 /* sources : http://docs.oracle.com/javase/tutorial/essential/environment/properties.html */
-
 public class Main {
 
-  public static void main(String[] args) {
+	public static void main(String[] args) {
 		
 		if (args.length != 2) {
-			
+
 			System.out.println("Please enter two input file names");
 		}
 		else {
 			
 			File fquery = new File(args[0]);
 			File fconfig = new File(args[1]);
-			/* AL queryLines holds one line from query.txt per AL's element */
-			ArrayList<String> queryLines = new ArrayList<String>(); 
-
-			System.out.println("File names are " + fquery.getName() + " and " + fconfig.getName() ); 
+			
+			/* 		AL queryLines holds one line from query.txt per AL's element 	*/
+			ArrayList<String> queryLines = new ArrayList<String>();  
 			
 	        	BufferedReader inputStream = null;
 	        	PrintWriter outputStream = null;
 	        
-	        /* reading query.txt into AL*/
-	        /* writing dummy output.txt */
+	        /* 		reading query.txt into AL		*/
 	        try {
 	        	
 	            inputStream = new BufferedReader(new FileReader(fquery));
-	            outputStream = new PrintWriter(new FileWriter("output.txt"));
 
 	            String l;
 	            while ((l = inputStream.readLine()) != null) {
 	            	
 	            	queryLines.add(l);
-	            	
-	            	outputStream.println("==================================================================");
-	                outputStream.println(l);
-	                outputStream.println("------------------------------------------------------------------");
-	                outputStream.println();
-	                outputStream.println("OPTIMAL PLAN HERE"); 
-	                outputStream.println();
-	                outputStream.println("------------------------------------------------------------------");
-	                outputStream.println("cost: XX.XX");
 	            }
 	        } 
 	        catch (IOException e) {
 
 				e.printStackTrace();
-			} 
+		} 
 	        finally {
 				
 	            if (inputStream != null) {
-	                try {
+	        
+	        	try {
 	                	
 				inputStream.close();
 			} 
-			catch (IOException e) {
+	                catch (IOException e) {
 						
 				e.printStackTrace();
 			}
 	            }
-	            if (outputStream != null) {
-	            	
-	                outputStream.close();
-	            }
 	        }
-	        /*	 				    */
-	        System.out.println("AL test");
-	        for (String line : queryLines) {
-	        	
-	        	System.out.println(line);
-	        }
-	        
-	        /* reading config.properties file */
+	        /* 		reading config.properties file 		*/
 	        Properties costProps = new Properties();
-	        
 	        FileInputStream in = null;
-		try {
+	        
+			try {
 				
-			in = new FileInputStream(fconfig);
-		} 
-		catch (FileNotFoundException e) {
+				in = new FileInputStream(fconfig);
+			} 
+			catch (FileNotFoundException e) {
 				
-			e.printStackTrace();
-		}
+				e.printStackTrace();
+			}
 	        try {
 	        	
 			costProps.load(in);
@@ -106,13 +83,48 @@ public class Main {
 		}
 	        try {
 	        	
-			in.close();
+				in.close();
 		} 
 	        catch (IOException e) {
 				
-			e.printStackTrace();
+				e.printStackTrace();
 		}
-	        /*	 NOTE : properties values of type String!     */
+	        /* 		writing dummy output.txt 	*/
+	        try {
+	        	
+			outputStream = new PrintWriter(new FileWriter("output.txt"));
+
+		        for (String line : queryLines) {
+
+	            	outputStream.println("==================================================================");
+	                outputStream.println(line);
+	                outputStream.println("------------------------------------------------------------------");
+	                outputStream.println();
+	                outputStream.println("OPTIMAL PLAN HERE"); 
+	                outputStream.println();
+	                outputStream.println("------------------------------------------------------------------");
+	                outputStream.println("cost: XX.X");
+		        }
+		} 
+	        catch (IOException e) {
+				
+				e.printStackTrace();
+		}
+	        finally {
+	        	
+	            if (outputStream != null) {
+	            	
+	                outputStream.close();
+	            }
+	        }
+	        /* 		AL elements test     */
+	        System.out.println("AL test");
+	        for (String line : queryLines) {
+	        	
+	        	System.out.println(line);
+	        }
+	        /* 		Properties test     */
+	        /*	 	NOTE : properties values of type String!     */
 	        System.out.println("Properties test");
 	        System.out.println("* NOTE : properties values are of type String!");
 	        System.out.println("# : " + costProps.size());
@@ -123,5 +135,5 @@ public class Main {
 	        System.out.println("a = " + costProps.getProperty("a"));
 	        System.out.println("f = " + costProps.getProperty("f"));
 	        }
-	}
+	}	
 }
