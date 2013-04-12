@@ -19,6 +19,7 @@ public class Main {
   public static void main(String[] args) {
 		
 		if (args.length != 2) {
+			
 			System.out.println("Please enter two input file names");
 		}
 		else {
@@ -30,8 +31,8 @@ public class Main {
 
 			System.out.println("File names are " + fquery.getName() + " and " + fconfig.getName() ); 
 			
-	        BufferedReader inputStream = null;
-	        PrintWriter outputStream = null;
+	        	BufferedReader inputStream = null;
+	        	PrintWriter outputStream = null;
 	        
 	        /* reading query.txt into AL*/
 	        /* writing dummy output.txt */
@@ -64,12 +65,12 @@ public class Main {
 	            if (inputStream != null) {
 	                try {
 	                	
-						inputStream.close();
-					} 
-					catch (IOException e) {
+				inputStream.close();
+			} 
+			catch (IOException e) {
 						
-						e.printStackTrace();
-					}
+				e.printStackTrace();
+			}
 	            }
 	            if (outputStream != null) {
 	            	
@@ -87,31 +88,31 @@ public class Main {
 	        Properties costProps = new Properties();
 	        
 	        FileInputStream in = null;
-			try {
+		try {
 				
-				//in = new FileInputStream("fconfig");
-				in = new FileInputStream("config.txt");
-			} 
-			catch (FileNotFoundException e) {
+			//in = new FileInputStream("fconfig");
+			in = new FileInputStream("config.txt");
+		} 
+		catch (FileNotFoundException e) {
 				
-				e.printStackTrace();
-			}
+			e.printStackTrace();
+		}
 	        try {
 	        	
-				costProps.load(in);
-			}
+			costProps.load(in);
+		}
 	        catch (IOException e) {
 				
-				e.printStackTrace();
-			}
+			e.printStackTrace();
+		}
 	        try {
 	        	
-				in.close();
-			} 
+			in.close();
+		} 
 	        catch (IOException e) {
 				
-				e.printStackTrace();
-			}
+			e.printStackTrace();
+		}
 	        /*	 NOTE : properties values of type String!     */
 	        System.out.println("Properties test");
 	        System.out.println("* NOTE : properties values are of type String!");
