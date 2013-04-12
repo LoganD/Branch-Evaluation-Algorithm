@@ -90,8 +90,7 @@ public class Main {
 	        FileInputStream in = null;
 		try {
 				
-			//in = new FileInputStream("fconfig");
-			in = new FileInputStream("config.txt");
+			in = new FileInputStream(fconfig);
 		} 
 		catch (FileNotFoundException e) {
 				
