@@ -52,7 +52,7 @@ public class Main {
 	                outputStream.println("OPTIMAL PLAN HERE"); 
 	                outputStream.println();
 	                outputStream.println("------------------------------------------------------------------");
-	                outputStream.println("cost: XX.X");
+	                outputStream.println("cost: XX.XX");
 	            }
 	        } 
 	        catch (IOException e) {
@@ -63,8 +63,10 @@ public class Main {
 				
 	            if (inputStream != null) {
 	                try {
+	                	
 						inputStream.close();
-					} catch (IOException e) {
+					} 
+					catch (IOException e) {
 						
 						e.printStackTrace();
 					}
