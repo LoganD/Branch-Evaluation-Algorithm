@@ -9,6 +9,9 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.StringTokenizer;
+
+import com.sun.tools.internal.xjc.reader.gbind.Sequence;
 
 /* ga */
 /* sources : http://docs.oracle.com/javase/tutorial/essential/io/charstreams.html */
@@ -16,82 +19,93 @@ import java.util.Properties;
 public class Main {
 
 	public static void main(String[] args) {
-		
+
 		if (args.length != 2) {
 
 			System.out.println("Please enter two input file names");
 		}
 		else {
-			
+
 			File fquery = new File(args[0]);
 			File fconfig = new File(args[1]);
-			
+
 			/* 		AL queryLines holds one line from query.txt per AL's element 	*/
 			ArrayList<String> queryLines = new ArrayList<String>();  
-			
-	        	BufferedReader inputStream = null;
-	        	PrintWriter outputStream = null;
-	        
-	        /* 		reading query.txt into AL		*/
-	        try {
-	        	
-	            inputStream = new BufferedReader(new FileReader(fquery));
 
-	            String l;
-	            while ((l = inputStream.readLine()) != null) {
-	            	
-	            	queryLines.add(l);
-	            }
-	        } 
-	        catch (IOException e) {
+			BufferedReader inputStream = null;
+			PrintWriter outputStream = null;
 
-				e.printStackTrace();
-		} 
-	        finally {
-				
-	            if (inputStream != null) {
-	        
-	        	try {
-	                	
-				inputStream.close();
-			} 
-	                catch (IOException e) {
-						
-				e.printStackTrace();
-			}
-	            }
-	        }
-	        /* 		reading config.properties file 		*/
-	        Properties costProps = new Properties();
-	        FileInputStream in = null;
-	        
+			/* 		reading query.txt into AL		*/
 			try {
-				
+
+				inputStream = new BufferedReader(new FileReader(fquery));
+
+				String l;
+				while ((l = inputStream.readLine()) != null) {
+					queryLines.add(l);
+				}
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
+			} 
+			finally {
+				if (inputStream != null) {
+					try {     	
+						inputStream.close();
+					} 
+					catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			/* 		reading config.properties file 		*/
+			Properties costProps = new Properties();
+			FileInputStream in = null;
+
+			try {
 				in = new FileInputStream(fconfig);
 			} 
 			catch (FileNotFoundException e) {
-				
 				e.printStackTrace();
 			}
-	        try {
-	        	
-			costProps.load(in);
-		}
-	        catch (IOException e) {
-				
-			e.printStackTrace();
-		}
-	        try {
-	        	
-				in.close();
-		} 
-	        catch (IOException e) {
-				
+			try {
+				costProps.load(in);
+			}
+			catch (IOException e) {
 				e.printStackTrace();
-		}
-	        /* 		writing dummy output.txt 	*/
-	        try {
-	        	
+			}
+			try {
+				in.close();
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			//actual code starts here    
+			int numPasses = queryLines.size();
+			ArrayList<Float> tempValues;
+			float[][] probs = new float[numPasses][]; //stores the probabilities in a 2D array
+
+			//builds the 2D array with all of the probabilities
+			for (int i = 0; i < queryLines.size(); i++) {
+				String line = queryLines.get(i);
+				StringTokenizer parse = new StringTokenizer(line);
+				tempValues = new ArrayList<Float>();
+				while(parse.hasMoreElements()){
+					String num = String.valueOf(parse.nextElement());
+					tempValues.add(Float.valueOf(num));
+				}
+				probs[i] = new float[tempValues.size()];
+				for (int j = 0; j < tempValues.size(); j++) {
+					probs[i][j] = tempValues.get(j);
+				}
+			}
+			
+			int currentLevel = 0; //represents what row of probablities we are working on
+			Sequence[] baseTerms = Sequence.
+
+			/* 		writing dummy output.txt 	*/
+			/*     try {
+
 			outputStream = new PrintWriter(new FileWriter("output.txt"));
 
 		        for (String line : queryLines) {
@@ -107,24 +121,24 @@ public class Main {
 		        }
 		} 
 	        catch (IOException e) {
-				
+
 				e.printStackTrace();
 		}
 	        finally {
-	        	
+
 	            if (outputStream != null) {
-	            	
+
 	                outputStream.close();
 	            }
 	        }
-	        /* 		AL elements test     */
+	        //		AL elements test    
 	        System.out.println("AL test");
 	        for (String line : queryLines) {
-	        	
+
 	        	System.out.println(line);
 	        }
-	        /* 		Properties test     */
-	        /*	 	NOTE : properties values of type String!     */
+	        // 		Properties test     
+	        // 	NOTE : properties values of type String!    
 	        System.out.println("Properties test");
 	        System.out.println("* NOTE : properties values are of type String!");
 	        System.out.println("# : " + costProps.size());
@@ -134,6 +148,7 @@ public class Main {
 	        System.out.println("m = " + costProps.getProperty("m"));
 	        System.out.println("a = " + costProps.getProperty("a"));
 	        System.out.println("f = " + costProps.getProperty("f"));
-	        }
-	}	
+			 */
+		}
+	}
 }
