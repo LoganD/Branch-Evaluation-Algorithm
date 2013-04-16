@@ -25,7 +25,7 @@ public class BitSetTest {
 	 */
 	public static void main(String[] args) {
 		 
-		int iK = Integer.parseInt(3);
+		int iK = Integer.parseInt(args[0]);
 		int iSetSize = (int) Math.pow(2, iK) - 1;
 		System.out.println("K is " + iK);
 		System.out.println("iSetSize = 2^K - 1 = " + iSetSize);
