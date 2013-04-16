@@ -1,8 +1,10 @@
+import java.util.ArrayList;
 import java.util.BitSet;
 
 
 public class Term {
-	public BitSet rep;
+	//public BitSet rep;
+	public Integer[] rep;
 	Term leftSeq;
 	Term rightSeq;
 	float cost;
@@ -12,53 +14,55 @@ public class Term {
 	String elementsString;
 	
 	Term() {
-		rep = new BitSet();
 	}
 	
-	Term(BitSet bs){
-		rep = bs;
+	Term(Integer[] givenRep){
+		this.rep = givenRep;
 	}
+
 	
-	public static Term[] getTermsArray(int card){
-		int iSetSize = (int) Math.pow(2, card) - 1;
-		Term[] arr = new Term[iSetSize];
-		String sBinInt;
-		String bit;
-		for (int i = 0; i < iSetSize; i++) {
-			sBinInt = Integer.toBinaryString(i+1);
-			System.out.println("binary string " + Integer.toBinaryString(i+1));
-			BitSet bs = new BitSet(card);
-			
-			for (int s = 0; s < sBinInt.length(); s++) {
-				
-				bit = sBinInt.substring(s, s + 1);
-				
-				if (Integer.parseInt(bit) == 1) {
-					
-					bs.set(s);
+	public static ArrayList<Integer[]> getTermsArray(int card){
+	    int numRows = (int)Math.pow(2, card);
+	    ArrayList<Integer[]> varArr = new ArrayList<Integer[]>();
+	    for(int i = 0;i<numRows;i++)
+	    {
+	    	Integer[] vars = new Integer[card];
+	        for(int j = 0; j < card; j++)
+	        {
+	            int val = numRows * j + i;
+	            int ret = (1 & (val >>> j));
+	            if (ret != 0){
+	            	vars[j] = 1;
+	            }
+	            else {
+					vars[j] = 0;
+				}
+	            //System.out.print(bitArrs[i][j]);
+	        }
+	        boolean notAllZeros = false;
+	        for (int j = 0; j < vars.length; j++) {
+				if(vars[j] == 1){
+					notAllZeros = true;
 				}
 			}
-			
-			arr[i].rep = bs;
-			System.out.println("value set[i] = " + arr[i].rep.toString());
-			System.out.print(" binary representation of a plan ");
-			for (int j = 0; j < card; j++) {
-				
-				if (arr[i].rep.get(j)) {
-					
-					System.out.print(1);
+	        if (notAllZeros){
+	        	varArr.add(vars);
+	        }
+	        
+	        //System.out.println();
+	    }
+	    /*//printing code
+	    for (int i = 0; i < varArr.size(); i++) {
+	    	System.out.print(i + ": ");
+	    	if (i < (numRows)){
+				for (int j = 0; j < card; j++) {
+					System.out.print(varArr.get(i)[j]);
 				}
-				else {
-					
-					System.out.print(0);
-				}
-			}
-			System.out.println();
-			System.out.println("cardinality " + arr[i].rep.cardinality());
-			System.out.println("===============" );
+			}	
 			System.out.println();
 		}
-		return arr;
+		*/
+	    return varArr;
 	}
 	
 }

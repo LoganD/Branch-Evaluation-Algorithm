@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import javax.management.Query;
+
 import com.sun.tools.internal.xjc.reader.gbind.Sequence;
 
 /* ga */
@@ -19,16 +21,18 @@ import com.sun.tools.internal.xjc.reader.gbind.Sequence;
 public class Main {
 
 	public static void main(String[] args) {
-
-		if (args.length != 2) {
+		
+		if (false) {
 
 			System.out.println("Please enter two input file names");
 		}
 		else {
 
-			File fquery = new File(args[0]);
-			File fconfig = new File(args[1]);
+			//File fquery = new File(args[0]);
+			//File fconfig = new File(args[1]);
 
+			File fquery = new File("query.txt");
+			File fconfig = new File("config.txt");
 			/* 		AL queryLines holds one line from query.txt per AL's element 	*/
 			ArrayList<String> queryLines = new ArrayList<String>();  
 
@@ -101,7 +105,7 @@ public class Main {
 			}
 			
 			int currentLevel = 0; //represents what row of probablities we are working on
-			Term[] baseTerms = Term.getTermsArray(probs[currentLevel].length);
+			ArrayList<Integer[]> test = Term.getTermsArray(probs[currentLevel].length);
 
 			/* 		writing dummy output.txt 	*/
 			/*     try {
