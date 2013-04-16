@@ -104,8 +104,8 @@ public class Main {
 				}
 			}
 			
-			int currentLevel = 0; //represents what row of probablities we are working on
-			ArrayList<Integer[]> test = Term.getTermsArray(probs[currentLevel].length);
+			int currentLevel = 1; //represents what row of probablities we are working on
+			ArrayList<Term> termsArrayList = Term.generateTermArray(probs[currentLevel].length);
 
 			/* 		writing dummy output.txt 	*/
 			/*     try {

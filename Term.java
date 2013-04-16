@@ -19,7 +19,25 @@ public class Term {
 	Term(Integer[] givenRep){
 		this.rep = givenRep;
 	}
-
+	
+	public void addLeft(Term lt){
+		this.leftSeq = lt;
+	}
+	
+	public void addRight(Term rt){
+		this.rightSeq = rt;
+	}
+	
+	public static ArrayList<Term> generateTermArray(int card) {
+		ArrayList<Integer[]> seqArr = Term.getTermsArray(card);
+		ArrayList<Term> termArr = new ArrayList<Term>();
+		for(Integer[] elem : seqArr){
+			Term tempTerm = new Term(elem);
+			termArr.add(tempTerm);
+		}
+		//System.out.print("There are " + termArr.size() + " elements");
+		return termArr;
+	}
 	
 	public static ArrayList<Integer[]> getTermsArray(int card){
 	    int numRows = (int)Math.pow(2, card);
