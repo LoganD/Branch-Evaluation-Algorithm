@@ -101,7 +101,7 @@ public class Main {
 			}
 			
 			int currentLevel = 0; //represents what row of probablities we are working on
-			Sequence[] baseTerms = Sequence.
+			Term[] baseTerms = Term.getTermsArray(probs[currentLevel].length);
 
 			/* 		writing dummy output.txt 	*/
 			/*     try {
