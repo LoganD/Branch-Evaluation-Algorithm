@@ -104,9 +104,34 @@ public class Main {
 				}
 			}
 			
-			int currentLevel = 1; //represents what row of probabilities we are working on
+			int currentLevel = 4; //represents what row of probabilities we are working on
 			ArrayList<Term> termsArrayList = Term.generateTermArray(probs[currentLevel].length);
+			Term.fillArrayCosts(termsArrayList, costProps, probs[currentLevel]);
 			
+			//loop that builds optimal plan
+			for (int i = 0; i < termsArrayList.size(); i++) {
+				for (int j = 0; j < termsArrayList.size(); j++) {
+					if(i == j){}
+					else{
+						if (termsArrayList.get(i).canCombine(termsArrayList.get(j))) {
+							float combCost = termsArrayList.get(i).calcDoubAnd(termsArrayList.get(j), costProps, probs[currentLevel]);
+							int index = Term.calcValue(termsArrayList.get(i), termsArrayList.get(j)); //sequences are stored in the index of their binary value - 1 since the all 0 sequence has been removed
+							if (combCost < termsArrayList.get(index - 1).cost) { //checks to see if the && plan is less than the & plan
+								termsArrayList.get(index - 1).leftSeq = termsArrayList.get(i);
+								termsArrayList.get(index - 1).rightSeq = termsArrayList.get(j);
+								termsArrayList.get(index - 1).cost = combCost; //sets the new cost
+								termsArrayList.get(index - 1).costAlgo = 2;
+							}
+						}
+					}
+					
+				}
+			}
+			/*
+			for (Term term : termsArrayList) {
+				System.out.println("The cost is " + term.cost + " and it uses the algo: " + term.algoName[term.costAlgo]);
+			}
+			*/
 
 			/* 		writing dummy output.txt 	*/
 			/*     try {
