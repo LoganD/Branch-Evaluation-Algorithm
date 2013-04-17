@@ -13,7 +13,6 @@ import java.util.StringTokenizer;
 
 import javax.management.Query;
 
-import com.sun.tools.internal.xjc.reader.gbind.Sequence;
 
 /* ga */
 /* sources : http://docs.oracle.com/javase/tutorial/essential/io/charstreams.html */
