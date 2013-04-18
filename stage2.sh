@@ -3,4 +3,5 @@
 rm *.class
 rm output.txt
 javac Main.java
+javac Term.java
 java Main $1 $2
