@@ -26,7 +26,7 @@ public class Main {
 			System.out.println("Please enter two input file names");
 		}
 		else {
-
+			//reads input files
 			File fquery = new File(args[0]);
 			File fconfig = new File(args[1]);
 
@@ -83,7 +83,7 @@ public class Main {
 				e.printStackTrace();
 			}
 			//actual code starts here    
-			int numPasses = queryLines.size();
+			int numPasses = queryLines.size(); 
 			ArrayList<Float> tempValues;
 			float[][] probs = new float[numPasses][]; //stores the probabilities in a 2D array
 
@@ -102,7 +102,7 @@ public class Main {
 				}
 			}
 			
-			outputStream = new PrintWriter(new FileWriter("output.txt"));
+			outputStream = new PrintWriter(new FileWriter("output.txt")); //
 			
 			//int currentLevel = 0; //represents what row of probabilities we are working on
 			for (int currentLevel = 0; currentLevel < probs.length; currentLevel++) {
@@ -154,7 +154,7 @@ public class Main {
 						
 					}
 				}
-				termsArrayList.get(termsArrayList.size()-1).printCodeOutput(probs[currentLevel], outputStream);
+				termsArrayList.get(termsArrayList.size()-1).printCodeOutput(probs[currentLevel]);
 			}
 			
 			outputStream.close();

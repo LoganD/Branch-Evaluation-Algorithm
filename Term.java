@@ -39,7 +39,7 @@ public class Term {
 		return answer;
 	}
 	
-	public Float[] largestDMetric() {
+	public Float[] largestDMetric() { //find the largest dMetric in a tree for comparison with another one
 		Float[] max = new Float[2];
 		max[0] = this.dMetric[0];
 		max[1] = this.dMetric[1];
@@ -76,7 +76,7 @@ public class Term {
 		return answer;
 	}
 	
-	public boolean compareCMetrics(Term t){
+	public boolean compareCMetrics(Term t){ //compares the cmetric of a term with another
 		boolean answer = false;
 		t = t.getLeftMostTerm(t);
 		boolean d1 = false;
@@ -121,7 +121,7 @@ public class Term {
 		return ans;
 	}
 	
-	public boolean hasSameTerms(Term t){
+	public boolean hasSameTerms(Term t){ //checks to see if two terms are the same
 		boolean answer = true;
 		for (int i = 0; i < this.rep.length; i++) {
 			if (t.rep[i] != this.rep[i]){
@@ -131,7 +131,7 @@ public class Term {
 		return answer;
 	}
 	
-	public static int calcValue(Term t1, Term t2) {
+	public static int calcValue(Term t1, Term t2) { //returns the binary value of the combination of the two
 		int[] combo = new int[t1.rep.length];
 		for (int i = 0; i < combo.length; i++) {
 			if (t1.rep[i] == 1 || t2.rep[i] == 1) {
@@ -149,7 +149,7 @@ public class Term {
 		return val;
 	}
 	
-	public static int[] combinedRep(Term t1, Term t2){
+	public static int[] combinedRep(Term t1, Term t2){ //combines two Terms to get the sequence of their &&
 		int[] combo = new int[t1.rep.length];
 		for (int i = 0; i < combo.length; i++) {
 			if (t1.rep[i] == 1 || t1.rep[i] == 1) {
@@ -178,13 +178,13 @@ public class Term {
 		this.rightSeq = rt;
 	}
 	
-	public static void fillArrayCosts(ArrayList<Term> termsArrayList, Properties props, float[] select){
+	public static void fillArrayCosts(ArrayList<Term> termsArrayList, Properties props, float[] select){ //looping function to calculate the costs of every element in an array
 		for (Term t : termsArrayList) {
 			calculateCost(t, props, select);
 		}
 	}
 	
-	public static void calculateCost(Term t, Properties props, float[] select){
+	public static void calculateCost(Term t, Properties props, float[] select){ //calculates both possible costs and determines the smaller one and the metrics
 		float[] answer = new float[2];
 		float sAnd = calcSAnd(t.rep, props, select);
 		float noBranch = calcNoBranch(t.rep, props);
@@ -201,21 +201,21 @@ public class Term {
 		t.calcDMetric(props, select);
 	}
 	
-	public String repToString(){
+	public String repToString(){ //outputs the sequence of a Term as an array like 01001
 		String s = "";
 		for (int i = 0; i < this.rep.length; i++) {
 			s += this.rep[i];
 		}
 		return s;
 	}
-	public static String repToString(int[] rep){
+	public static String repToString(int[] rep){ //outputs the sequence of a Term as an array like 01001
 		String s = "";
 		for (int i = 0; i < rep.length; i++) {
 			s += rep[i];
 		}
 		return s;
 	}
-	public static float calcNoBranch(Integer[] vars, Properties props){
+	public static float calcNoBranch(Integer[] vars, Properties props){ // Calculates the no Branch cost
 		float k = 0;
 		for (int i = 0; i < vars.length; i++) {
 			if (vars[i] == 1) {
@@ -230,7 +230,7 @@ public class Term {
 		return cost;
 	}
 	
-	public static float calcSAnd(Integer[] vars, Properties props, float[] select){
+	public static float calcSAnd(Integer[] vars, Properties props, float[] select){ //Calculates the cost of a single AND
 		int k = 0;
 		for (int i = 0; i < vars.length; i++) {
 			if (vars[i] == 1) {
@@ -260,7 +260,7 @@ public class Term {
 		return cost;
 	}
 
-	public float calcDoubAnd(Term t, Properties props, float[] select){
+	public float calcDoubAnd(Term t, Properties props, float[] select){ //calculates the cost of a double &&
 		int k = 0;
 		this.numVars();
 		k = this.varsPresent;
@@ -285,7 +285,7 @@ public class Term {
 		return planCost;
 	}
 	
-	public void calcCMetric(Properties props, float[] select){
+	public void calcCMetric(Properties props, float[] select){ //Calculates the c metric
 		float[] tuple = new float[2];
 		int k = 0;
 		for (int i = 0; i < this.rep.length; i++) {
@@ -315,7 +315,7 @@ public class Term {
 		this.cMetric = tuple;
 	}
 	
-	public void calcDMetric(Properties props, float[] select){
+	public void calcDMetric(Properties props, float[] select){ //calculates the D metric
 		Float[] tuple = new Float[2];
 		int k = 0;
 		for (int i = 0; i < this.rep.length; i++) {
@@ -346,14 +346,14 @@ public class Term {
 		//System.out.print("There are " + termArr.size() + " elements");
 		return termArr;
 	}
-	
+	//function that generates all possible sequences given just the max number of variables
 	public static ArrayList<Integer[]> getTermsArray(int card){
 	    int numRows = (int)Math.pow(2, card);
 	    ArrayList<Integer[]> varArr = new ArrayList<Integer[]>();
 	    for(int i = 0;i<numRows;i++)
 	    {
 	    	Integer[] vars = new Integer[card];
-	        for(int j = 0; j < card; j++)
+	        for(int j = 0; j < card; j++) //fills the elements
 	        {
 	            int val = numRows * j + i;
 	            int ret = (1 & (val >>> j));
@@ -365,8 +365,8 @@ public class Term {
 				}
 	            //System.out.print(bitArrs[i][j]);
 	        }
-	        boolean notAllZeros = false;
-	        for (int j = 0; j < vars.length; j++) {
+	        boolean notAllZeros = false; 
+	        for (int j = 0; j < vars.length; j++) { //removes the all 0s sequence
 				if(vars[j] == 1){
 					notAllZeros = true;
 				}
@@ -440,13 +440,13 @@ public class Term {
 		return output;
 	}
 	
-	public void printCodeOutput(float[] probs, PrintWriter outputStream){
-		outputStream.println("======================================");
+	public void printCodeOutput(float[] probs){ //recusively prints out the Term tree that represents the lowest cost
+		System.out.println("======================================");
 		for (int i = 0; i < probs.length; i++) {
-			outputStream.print(probs[i] + " ");
+			System.out.print(probs[i] + " ");
 		}
-		outputStream.println();
-		outputStream.println("--------------------------------------");
+		System.out.println();
+		System.out.println("--------------------------------------");
 		boolean[] output = {false,false,false,false};
 		String[] outputStrings = new String[4];
 		String s0 = "if";
@@ -479,11 +479,11 @@ public class Term {
 		
 		for (int i = 0; i < 4; i++) {
 			if (output[i]) {
-				outputStream.println(outputStrings[i]);
+				System.out.println(outputStrings[i]);
 			}
 		}
-		outputStream.println("--------------------------------------");
-		outputStream.println("cost = " + this.cost);
+		System.out.println("--------------------------------------");
+		System.out.println("cost = " + this.cost);
 	}
 	
 }
