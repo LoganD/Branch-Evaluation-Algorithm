@@ -351,6 +351,47 @@ public class Term {
 	    return varArr;
 	}
 	
+	protected String termOut(Integer i){
+		return "t" + i + "[o" + i + "[i]]";
+	}
+	
+	public String[] determinePlanArrangement(){
+		String[] output = new String[2];
+		String ifConditional = "";
+		String jPlusAssignment = "";
+		
+		if (costAlgo < 2){ // not a && Term
+			String allTogether = "";
+			// Find out which functions this Term covers
+			for (int i = 0; i < this.rep.length; i++) {
+				if (this.rep[i] == 1){
+					if (allTogether.length() > 0){ allTogether += " & "; }
+					allTogether += termOut(i);
+				}
+			}
+			
+			if (costAlgo == 0) { // an & Term
+				ifConditional = allTogether;
+			}
+			else if (costAlgo == 1) { // a No-Branch Term
+				jPlusAssignment = allTogether;
+			}
+		}
+		else { // is a && Term, and so recurse the children
+			String[] outputChildL = this.leftSeq.determinePlanArrangement();
+			String[] outputChildR = this.rightSeq.determinePlanArrangement();
+			
+			jPlusAssignment = outputChildL[2];
+			if (jPlusAssignment.length() > 0) { jPlusAssignment += " & "; }
+			jPlusAssignment += outputChildR[2];
+			
+			
+		}
+		output[1] = ifConditional;
+		output[2] = jPlusAssignment;
+		return output;
+	}
+	
 	public void printCodeOutput(float[] probs){
 		System.out.println("======================================");
 		for (int i = 0; i < probs.length; i++) {
