@@ -109,15 +109,15 @@ public class Main {
 			//loop that builds optimal plan
 			for (int i = 0; i < termsArrayList.size(); i++) {
 				for (int j = 0; j < termsArrayList.size(); j++) {
-					if(false){}
+					if(i == j){}
 					else{
 						if (termsArrayList.get(i).canCombine(termsArrayList.get(j))) {
 							
 							float combCost = termsArrayList.get(i).calcDoubAnd(termsArrayList.get(j), costProps, probs[currentLevel]);
 							int index = Term.calcValue(termsArrayList.get(i), termsArrayList.get(j)); //sequences are stored in the index of their binary value - 1 since the all 0 sequence has been removed
 							int[] cmbrep = Term.combinedRep(termsArrayList.get(i), termsArrayList.get(j));
-							String cmbrepString = Term.repToString(cmbrep);
-							System.out.println("The && is: " + combCost + " union cost is " + termsArrayList.get(index - 1).cost + "for " + cmbrepString + " and " + termsArrayList.get(index - 1).repToString());
+							//String cmbrepString = Term.repToString(cmbrep);
+							//System.out.println("The && is: " + combCost + " union cost is " + termsArrayList.get(index - 1).cost + " for " + termsArrayList.get(i).repToString()+ " with " + termsArrayList.get(j).repToString() + " vs " + termsArrayList.get(index - 1).repToString() + " index: " + index);
 							if (combCost < termsArrayList.get(index - 1).cost) { //checks to see if the && plan is less than the & plan
 								termsArrayList.get(index - 1).leftSeq = termsArrayList.get(i);
 								termsArrayList.get(index - 1).rightSeq = termsArrayList.get(j);

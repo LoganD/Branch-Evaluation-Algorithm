@@ -65,7 +65,7 @@ public class Term {
 	public static int calcValue(Term t1, Term t2) {
 		int[] combo = new int[t1.rep.length];
 		for (int i = 0; i < combo.length; i++) {
-			if (t1.rep[i] == 1 || t1.rep[i] == 1) {
+			if (t1.rep[i] == 1 || t2.rep[i] == 1) {
 				combo[i] = 1;
 			}
 			else combo[i] = 0;
@@ -76,6 +76,7 @@ public class Term {
 				val += Math.pow(2, i);
 			}
 		}
+		//System.out.println(Term.repToString(combo) + " = " + val);
 		return val;
 	}
 	
