@@ -1,7 +1,0 @@
-//Code to print the probs array
-	    for (int i = 0; i < probs.length; i++) {
-			for (int j = 0; j < probs[i].length; j++) {
-				System.out.print(probs[i][j] + " ");
-			}
-			System.out.println();
-		}
