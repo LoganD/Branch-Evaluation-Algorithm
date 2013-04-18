@@ -15,7 +15,7 @@ public class Term {
 	int costAlgo = -1; //0 = single&, 1=NoBranch, 2 = &&
 	float cost;
 	float[] cMetric;
-	float[] dMetric;
+	Float[] dMetric;
 	//String elementsString;
 	
 	Term() {
@@ -26,10 +26,89 @@ public class Term {
 		numVars();
 	}
 	
-	public boolean compareCmetric(Term t){
-		return false;
+	public float calcProductivites(float[] select){
+		float answer = 1.0f;
+		for (int i = 0; i < this.rep.length; i++) {
+			if(this.rep[i] == 1){
+				answer = answer * select[i];
+			}
+		}
+		return answer;
 	}
 	
+	public boolean biggerD(Float[] d1, Float[] comp){
+		boolean answer = false;
+		if (d1[0] < comp[0] && d1[1] < comp[1]){
+			answer = true;
+		}
+		return answer;
+	}
+	
+	public Float[] largestDMetric() {
+		Float[] max = this.dMetric;
+		Term term = this;
+		ArrayList<Float[]> compares = new ArrayList<Float[]>();
+		ArrayList<Term> stackArrayList = new ArrayList<Term>();
+		stackArrayList.add(term);
+		while(stackArrayList.get(0) != null){
+			if(stackArrayList.get(0).leftSeq != null){
+				compares.add(stackArrayList.get(0).leftSeq.dMetric);
+				stackArrayList.add(stackArrayList.get(0).leftSeq);
+			}
+			if (stackArrayList.get(0).rightSeq != null) {
+				compares.add(stackArrayList.get(0).rightSeq.dMetric);
+				stackArrayList.add(stackArrayList.get(0).rightSeq);
+			}
+			stackArrayList.remove(0);
+		}
+		for (Float[] comp : compares) {
+			if (biggerD(max, comp)){
+				max = comp;
+			}
+		}
+		return max;
+	}
+	/*
+	 * iterativeInorder(node)
+  parentStack = empty stack
+  while not parentStack.isEmpty() or node != null
+    if node != null then
+      parentStack.push(node)
+      node = node.left
+    else
+      node = parentStack.pop()
+      visit(node)
+      node = node.right
+	 */
+	public boolean compareDMetrics(Term t){
+		Float[] toComp = t.largestDMetric();
+		boolean answer = biggerD(this.dMetric, toComp);
+		return answer;
+	}
+	
+	public boolean compareCMetrics(Term t){
+		boolean answer = false;
+		t = t.getLeftMostTerm(t);
+		boolean d1 = false;
+		if (this.cMetric[0] < t.cMetric[0]){
+			d1 = true;
+		}
+		boolean d2 = false;
+		if (this.cMetric[1] < t.cMetric[1]){
+			d2 = true;
+		}
+		if (d1 && d2){
+			answer = true;
+		}
+		return answer;
+	}
+	
+	public Term getLeftMostTerm(Term t){
+		if(hasLeftChild()){
+			return t.leftSeq;
+		}
+		return t;
+	}
 	public void numVars(){
 		this.varsPresent = 0;
 		for (int i = 0; i < this.rep.length; i++) {
@@ -129,6 +208,7 @@ public class Term {
 		}
 		//System.out.println("NoBranch is : "+ noBranch + " and sAnd is: " + sAnd + " So we choose: "+ t.algoName[t.costAlgo]);
 		t.calcCMetric(props, select);
+		t.calcDMetric(props, select);
 	}
 	
 	public String repToString(){
@@ -276,7 +356,7 @@ public class Term {
 	}
 	
 	public void calcDMetric(Properties props, float[] select){
-		float[] tuple = new float[2];
+		Float[] tuple = new Float[2];
 		int k = 0;
 		for (int i = 0; i < this.rep.length; i++) {
 			if (this.rep[i] == 1) {
@@ -350,6 +430,8 @@ public class Term {
 		*/
 	    return varArr;
 	}
+	
+	//public String[] writeNode(Term t)
 	
 	public void printCodeOutput(float[] probs){
 		System.out.println("======================================");

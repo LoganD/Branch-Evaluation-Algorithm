@@ -110,6 +110,11 @@ public class Main {
 			for (int i = 0; i < termsArrayList.size(); i++) {
 				for (int j = 0; j < termsArrayList.size(); j++) {
 					if(i == j){}
+					else if (termsArrayList.get(i).compareCMetrics(termsArrayList.get(j))) { //checks for CMetric optimization
+					}
+					else if (termsArrayList.get(i).compareDMetrics(termsArrayList.get(j)) && (termsArrayList.get(i)).calcProductivites(probs[currentLevel]) <= 0.5) {
+						
+					}
 					else{
 						if (termsArrayList.get(i).canCombine(termsArrayList.get(j))) {
 							// checks if a && b is better than aUb
@@ -131,7 +136,6 @@ public class Main {
 							//int index2 = Term.calcValue(termsArrayList.get(i), termsArrayList.get(j)); //sequences are stored in the index of their binary value - 1 since the all 0 sequence has been removed
 							//System.out.println("The && is: " + combCost + " union cost is " + termsArrayList.get(index - 1).cost + " for " + termsArrayList.get(i).repToString()+ " with " + termsArrayList.get(j).repToString() + " vs " + termsArrayList.get(index - 1).repToString() + " index: " + index);
 							float compVal2 = combCost2 - termsArrayList.get(index - 1).cost;
-							
 							if (compVal2 < 0 && Math.abs(compVal2) > 0.001) { //checks to see if the && plan is less than the & plan
 								termsArrayList.get(index - 1).leftSeq = termsArrayList.get(j);
 								termsArrayList.get(index - 1).rightSeq = termsArrayList.get(i);
