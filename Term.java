@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Properties;
+import com.sun.corba.se.spi.monitoring.StatisticMonitoredAttribute;
+import com.sun.corba.se.spi.orb.StringPair;
 
 
 public class Term {
@@ -24,6 +26,10 @@ public class Term {
 		numVars();
 	}
 	
+	public boolean compareCmetric(Term t){
+		return false;
+	}
+	
 	public void numVars(){
 		this.varsPresent = 0;
 		for (int i = 0; i < this.rep.length; i++) {
@@ -31,6 +37,19 @@ public class Term {
 				this.varsPresent++;
 			}
 		}
+	}
+	
+	public boolean hasLeftChild(){
+		boolean ans = (leftSeq != null);
+		return ans;
+	}
+	
+	public boolean hasChildren(){
+		boolean ans = false;
+		if (leftSeq != null || rightSeq !=null){
+			ans = true;
+		}
+		return ans;
 	}
 	
 	public boolean hasSameTerms(Term t){
@@ -107,12 +126,26 @@ public class Term {
 			t.cost = sAnd;
 			t.costAlgo = 0;
 		}
-		System.out.println("NoBranch is : "+ noBranch + " and sAnd is: " + sAnd + " So we choose: "+ t.algoName[t.costAlgo]);
+		//System.out.println("NoBranch is : "+ noBranch + " and sAnd is: " + sAnd + " So we choose: "+ t.algoName[t.costAlgo]);
 		t.calcCMetric(props, select);
 	}
 	
+	public String repToString(){
+		String s = "";
+		for (int i = 0; i < this.rep.length; i++) {
+			s += this.rep[i];
+		}
+		return s;
+	}
+	public static String repToString(int[] rep){
+		String s = "";
+		for (int i = 0; i < rep.length; i++) {
+			s += rep[i];
+		}
+		return s;
+	}
 	public static float calcNoBranch(Integer[] vars, Properties props){
-		int k = 0;
+		float k = 0;
 		for (int i = 0; i < vars.length; i++) {
 			if (vars[i] == 1) {
 				k++;
@@ -155,7 +188,7 @@ public class Term {
 		cost += product * Float.valueOf(props.getProperty("a"));
 		return cost;
 	}
-	
+	/*
 	public float calcDoubAnd(float costPlan2, Properties props, float[] select){
 		int k = 0;
 		for (int i = 0; i < this.rep.length; i++) {
@@ -185,34 +218,29 @@ public class Term {
 		planCost += product * costPlan2;
 		return planCost;
 	}
-	
+	*/
 	public float calcDoubAnd(Term t, Properties props, float[] select){
 		int k = 0;
-		for (int i = 0; i < this.rep.length; i++) {
-			if (this.rep[i] == 1) {
-				k++;
-			}
-		}
-		float fcost = k * Float.valueOf(props.getProperty("r"));
-		fcost += (k-1)*Float.valueOf(props.getProperty("l"));
-		fcost += k*Float.valueOf(props.getProperty("f"));
-		fcost += Float.valueOf(props.getProperty("t"));
+		this.numVars();
+		k = this.varsPresent;
+		float fcost = k * Float.valueOf(props.getProperty("r")); //fcost = kr
+		fcost += (k-1)*Float.valueOf(props.getProperty("l")); // + (k-1)l
+		fcost += k*Float.valueOf(props.getProperty("f")); // + kf
+		fcost += Float.valueOf(props.getProperty("t")); // + t
 		float q = 0;
 		float product = 1.0f;
+		float prod2 = 10.f;
 		for (int i = 0; i < select.length; i++) {
 			if (this.rep[i] == 1) {
 				product = product * select[i];
-			}
+				//System.out.print(select[i] + " * ");
+			}	
 		}
-		if (product > 0.5){
-			q = (1.0f - product);
-		}
-		else {
-			q = product;
-		}
+		//System.out.println("= " + product + " from " + this.repToString() + " and " + t.repToString());
+		q = Math.min(product, (1-product));
 		float planCost = fcost;
-		planCost += q * Float.valueOf(props.getProperty("m"));
-		planCost += product * t.cost;
+		planCost += q * Float.valueOf(props.getProperty("m")); //cost = fcost + q*m
+		planCost += product * t.cost; // + p*C
 		return planCost;
 	}
 	
@@ -320,6 +348,47 @@ public class Term {
 		}
 		*/
 	    return varArr;
+	}
+	
+	public void printCodeOutput(float[] probs){
+		System.out.println("======================================");
+		for (int i = 0; i < probs.length; i++) {
+			System.out.print(probs[i] + " ");
+		}
+		System.out.println();
+		System.out.println("--------------------------------------");
+		int[] output = {0,0,0,0};
+		String[] outputStrings = new String[4];
+		String s1 = "if(";
+		outputStrings[0] = s1;
+		String s2 = "answer[j] = i;";
+		outputStrings[1] = s2;
+		String s3 = "j += (";
+		outputStrings[2] = s3;
+		String s4 = "}";
+		outputStrings[3] = s4;
+		if(!this.hasChildren()){
+			if(this.costAlgo == 1){
+				output[1] = 1;
+				output[2] = 1;
+				for (int i = 1; i < this.rep.length; i++) {
+					String newS = "t" + i + "[o" + i + "[i]] & ";
+					//System.out.println(newS);
+					outputStrings[2] = outputStrings[2].concat(newS);
+					//System.out.println(outputStrings[2]);
+				}
+				int lastInt = this.rep.length;
+				outputStrings[2] = outputStrings[2].concat("t" + lastInt + "[o" + lastInt + "[i]]);");
+			}
+		}
+		//print the output
+		for (int i = 0; i < 4; i++) {
+			if (output[i] == 1) {
+				System.out.println(outputStrings[i]);
+			}
+		}
+		System.out.println("--------------------------------------");
+		System.out.println("cost = " + this.cost);
 	}
 	
 }

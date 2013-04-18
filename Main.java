@@ -40,7 +40,6 @@ public class Main {
 
 			/* 		reading query.txt into AL		*/
 			try {
-
 				inputStream = new BufferedReader(new FileReader(fquery));
 
 				String l;
@@ -103,29 +102,44 @@ public class Main {
 				}
 			}
 			
-			int currentLevel = 4; //represents what row of probabilities we are working on
+			int currentLevel = 2; //represents what row of probabilities we are working on
 			ArrayList<Term> termsArrayList = Term.generateTermArray(probs[currentLevel].length);
 			Term.fillArrayCosts(termsArrayList, costProps, probs[currentLevel]);
 			
 			//loop that builds optimal plan
 			for (int i = 0; i < termsArrayList.size(); i++) {
 				for (int j = 0; j < termsArrayList.size(); j++) {
-					if(i == j){}
+					if(false){}
 					else{
 						if (termsArrayList.get(i).canCombine(termsArrayList.get(j))) {
+							
 							float combCost = termsArrayList.get(i).calcDoubAnd(termsArrayList.get(j), costProps, probs[currentLevel]);
 							int index = Term.calcValue(termsArrayList.get(i), termsArrayList.get(j)); //sequences are stored in the index of their binary value - 1 since the all 0 sequence has been removed
+							int[] cmbrep = Term.combinedRep(termsArrayList.get(i), termsArrayList.get(j));
+							String cmbrepString = Term.repToString(cmbrep);
+							System.out.println("The && is: " + combCost + " union cost is " + termsArrayList.get(index - 1).cost + "for " + cmbrepString + " and " + termsArrayList.get(index - 1).repToString());
 							if (combCost < termsArrayList.get(index - 1).cost) { //checks to see if the && plan is less than the & plan
 								termsArrayList.get(index - 1).leftSeq = termsArrayList.get(i);
 								termsArrayList.get(index - 1).rightSeq = termsArrayList.get(j);
 								termsArrayList.get(index - 1).cost = combCost; //sets the new cost
 								termsArrayList.get(index - 1).costAlgo = 2;
+								System.out.println("A replacement has been made. " + termsArrayList.get(i).repToString() + " + " + termsArrayList.get(j).repToString() + " = " + termsArrayList.get(index - 1).repToString());
 							}
 						}
 					}
 					
 				}
 			}
+			/*
+			for (Term term : termsArrayList) {
+				System.out.println(term.repToString() + " costs: " + term.cost);
+			}
+			
+			System.out.println(termsArrayList.get(termsArrayList.size()-1).repToString());
+			System.out.println(termsArrayList.get(termsArrayList.size()-1).costAlgo);
+			System.out.println(termsArrayList.get(termsArrayList.size()-1).cost + " " + termsArrayList.get(termsArrayList.size()-1).algoName[termsArrayList.get(termsArrayList.size()-1).costAlgo]);
+			*/
+			//termsArrayList.get(termsArrayList.size()-1).printCodeOutput(probs[currentLevel]);
 			/*
 			for (Term term : termsArrayList) {
 				System.out.println("The cost is " + term.cost + " and it uses the algo: " + term.algoName[term.costAlgo]);
@@ -177,7 +191,7 @@ public class Main {
 	        System.out.println("m = " + costProps.getProperty("m"));
 	        System.out.println("a = " + costProps.getProperty("a"));
 	        System.out.println("f = " + costProps.getProperty("f"));
-			 */
+			*/
 		}
 	}
 }
