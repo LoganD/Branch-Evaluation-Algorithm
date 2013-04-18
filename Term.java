@@ -366,7 +366,7 @@ public class Term {
 			for (int i = 0; i < this.rep.length; i++) {
 				if (this.rep[i] == 1){
 					if (allTogether.length() > 0){ allTogether += " & "; }
-					allTogether += termOut(i);
+					allTogether += termOut(i+1);
 				}
 			}
 			
@@ -389,7 +389,11 @@ public class Term {
 			if (ifConditional.length() > 0 && outputChildR[0].length() > 0) { ifConditional += " && "; }
 			ifConditional += outputChildR[0];
 		}
-		output[0] = "(" + ifConditional + ")";
+		
+		if (ifConditional.length() > 0) {
+			ifConditional = "(" + ifConditional + ")";
+		}
+		output[0] = ifConditional;
 		output[1] = jPlusAssignment;
 		return output;
 	}
@@ -401,20 +405,41 @@ public class Term {
 		}
 		System.out.println();
 		System.out.println("--------------------------------------");
-		int[] output = {0,0,0,0};
+		boolean[] output = {false,false,false,false};
 		String[] outputStrings = new String[4];
-		String s1 = "if(";
-		outputStrings[0] = s1;
-		String s2 = "answer[j] = i;";
-		outputStrings[1] = s2;
-		String s3 = "j += (";
-		outputStrings[2] = s3;
-		String s4 = "}";
-		outputStrings[3] = s4;
+		String s0 = "if";
+		String s1 = "answer[j] = i;";
+		String s2 = "j += 1";
+		String s3 = "}";
+		String indent = "";
+
+		String[] plan = this.determinePlanArrangement();
+		if (plan[0].length() > 0) {
+			output[0] = true;
+			s0 += plan[0] + " {";
+			indent = "    ";
+			output[3] = true;
+		}
+		
+		output[1] = true;
+		s1 = indent + s1;
+		output[2] = true;
+		s2 = indent + s2;
+		
+		if (plan[1].length() > 0) {
+			s2 = indent + "j += (" + plan[1] + ");";
+		}
+		
+		outputStrings[0] = s0;
+		outputStrings[1] = s1;
+		outputStrings[2] = s2;
+		outputStrings[3] = s3;
+		
+		/*
 		if(!this.hasChildren()){
 			if(this.costAlgo == 1){
-				output[1] = 1;
-				output[2] = 1;
+				output[1] = true;
+				output[2] = true;
 				for (int i = 1; i < this.rep.length; i++) {
 					String newS = "t" + i + "[o" + i + "[i]] & ";
 					//System.out.println(newS);
@@ -425,9 +450,10 @@ public class Term {
 				outputStrings[2] = outputStrings[2].concat("t" + lastInt + "[o" + lastInt + "[i]]);");
 			}
 		}
+		*/
 		//print the output
 		for (int i = 0; i < 4; i++) {
-			if (output[i] == 1) {
+			if (output[i]) {
 				System.out.println(outputStrings[i]);
 			}
 		}
