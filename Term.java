@@ -381,14 +381,16 @@ public class Term {
 			String[] outputChildL = this.leftSeq.determinePlanArrangement();
 			String[] outputChildR = this.rightSeq.determinePlanArrangement();
 			
-			jPlusAssignment = outputChildL[2];
-			if (jPlusAssignment.length() > 0) { jPlusAssignment += " & "; }
-			jPlusAssignment += outputChildR[2];
+			jPlusAssignment = outputChildL[1];
+			if (jPlusAssignment.length() > 0 && outputChildR[1].length() > 0) { jPlusAssignment += " & "; }
+			jPlusAssignment += outputChildR[1];
 			
-			
+			ifConditional = outputChildL[0];
+			if (ifConditional.length() > 0 && outputChildR[0].length() > 0) { ifConditional += " && "; }
+			ifConditional += outputChildR[0];
 		}
-		output[1] = ifConditional;
-		output[2] = jPlusAssignment;
+		output[0] = "(" + ifConditional + ")";
+		output[1] = jPlusAssignment;
 		return output;
 	}
 	
