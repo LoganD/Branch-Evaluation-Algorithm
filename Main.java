@@ -19,7 +19,7 @@ import javax.management.Query;
 /* sources : http://docs.oracle.com/javase/tutorial/essential/environment/properties.html */
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		if (false) {
 
@@ -27,11 +27,11 @@ public class Main {
 		}
 		else {
 
-			//File fquery = new File(args[0]);
-			//File fconfig = new File(args[1]);
+			File fquery = new File(args[0]);
+			File fconfig = new File(args[1]);
 
-			File fquery = new File("query.txt");
-			File fconfig = new File("config.txt");
+			//File fquery = new File("query.txt");
+			//File fconfig = new File("config.txt");
 			/* 		AL queryLines holds one line from query.txt per AL's element 	*/
 			ArrayList<String> queryLines = new ArrayList<String>();  
 
@@ -102,6 +102,8 @@ public class Main {
 				}
 			}
 			
+			outputStream = new PrintWriter(new FileWriter("output.txt"));
+			
 			//int currentLevel = 0; //represents what row of probabilities we are working on
 			for (int currentLevel = 0; currentLevel < probs.length; currentLevel++) {
 				ArrayList<Term> termsArrayList = Term.generateTermArray(probs[currentLevel].length);
@@ -152,9 +154,10 @@ public class Main {
 						
 					}
 				}
-				termsArrayList.get(termsArrayList.size()-1).printCodeOutput(probs[currentLevel]);
+				termsArrayList.get(termsArrayList.size()-1).printCodeOutput(probs[currentLevel], outputStream);
 			}
 			
+			outputStream.close();
 			/*
 			System.out.println(termsArrayList.get(termsArrayList.size()-1).repToString());
 			System.out.println(termsArrayList.get(termsArrayList.size()-1).costAlgo);

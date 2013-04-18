@@ -1,12 +1,8 @@
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Properties;
-import com.sun.corba.se.spi.monitoring.StatisticMonitoredAttribute;
-import com.sun.corba.se.spi.orb.StringPair;
-
 
 public class Term {
-	//public BitSet rep;
 	public Integer[] rep;
 	Term leftSeq;
 	Term rightSeq;
@@ -16,7 +12,6 @@ public class Term {
 	float cost;
 	float[] cMetric;
 	Float[] dMetric;
-	//String elementsString;
 	
 	Term() {
 	}
@@ -445,13 +440,13 @@ public class Term {
 		return output;
 	}
 	
-	public void printCodeOutput(float[] probs){
-		System.out.println("======================================");
+	public void printCodeOutput(float[] probs, PrintWriter outputStream){
+		outputStream.println("======================================");
 		for (int i = 0; i < probs.length; i++) {
-			System.out.print(probs[i] + " ");
+			outputStream.print(probs[i] + " ");
 		}
-		System.out.println();
-		System.out.println("--------------------------------------");
+		outputStream.println();
+		outputStream.println("--------------------------------------");
 		boolean[] output = {false,false,false,false};
 		String[] outputStrings = new String[4];
 		String s0 = "if";
@@ -501,11 +496,11 @@ public class Term {
 		//print the output
 		for (int i = 0; i < 4; i++) {
 			if (output[i]) {
-				System.out.println(outputStrings[i]);
+				outputStream.println(outputStrings[i]);
 			}
 		}
-		System.out.println("--------------------------------------");
-		System.out.println("cost = " + this.cost);
+		outputStream.println("--------------------------------------");
+		outputStream.println("cost = " + this.cost);
 	}
 	
 }
