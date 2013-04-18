@@ -139,7 +139,7 @@ public class Main {
 			System.out.println(termsArrayList.get(termsArrayList.size()-1).costAlgo);
 			System.out.println(termsArrayList.get(termsArrayList.size()-1).cost + " " + termsArrayList.get(termsArrayList.size()-1).algoName[termsArrayList.get(termsArrayList.size()-1).costAlgo]);
 			*/
-			//termsArrayList.get(termsArrayList.size()-1).printCodeOutput(probs[currentLevel]);
+			termsArrayList.get(termsArrayList.size()-1).printCodeOutput(probs[currentLevel]);
 			/*
 			for (Term term : termsArrayList) {
 				System.out.println("The cost is " + term.cost + " and it uses the algo: " + term.algoName[term.costAlgo]);
