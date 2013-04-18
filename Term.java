@@ -432,7 +432,7 @@ public class Term {
 			ifConditional += outputChildR[0];
 		}
 		
-		if (ifConditional.length() > 0) {
+		if (ifConditional.length() > 0 && varsPresent > 1) {
 			ifConditional = "(" + ifConditional + ")";
 		}
 		output[0] = ifConditional;
