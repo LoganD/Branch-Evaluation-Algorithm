@@ -438,8 +438,116 @@ public class Term {
 	}
 	
 	//public String[] writeNode(Term t)
+
+	protected String termOut(Integer i){
+		return "t" + i + "[o" + i + "[i]]";
+	}
 	
+	public String[] determinePlanArrangement(){
+		String[] output = new String[2];
+		String ifConditional = "";
+		String jPlusAssignment = "";
+		
+		if (costAlgo < 2){ // not a && Term
+			String allTogether = "";
+			// Find out which functions this Term covers
+			for (int i = 0; i < this.rep.length; i++) {
+				if (this.rep[i] == 1){
+					if (allTogether.length() > 0){ allTogether += " & "; }
+					allTogether += termOut(i+1);
+				}
+			}
+			
+			if (costAlgo == 0) { // an & Term
+				ifConditional = allTogether;
+			}
+			else if (costAlgo == 1) { // a No-Branch Term
+				jPlusAssignment = allTogether;
+			}
+		}
+		else { // is a && Term, and so recurse the children
+			String[] outputChildL = this.leftSeq.determinePlanArrangement();
+			String[] outputChildR = this.rightSeq.determinePlanArrangement();
+			
+			jPlusAssignment = outputChildL[1];
+			if (jPlusAssignment.length() > 0 && outputChildR[1].length() > 0) { jPlusAssignment += " & "; }
+			jPlusAssignment += outputChildR[1];
+			
+			ifConditional = outputChildL[0];
+			if (ifConditional.length() > 0 && outputChildR[0].length() > 0) { ifConditional += " && "; }
+			ifConditional += outputChildR[0];
+		}
+		
+		if (ifConditional.length() > 0) {
+			ifConditional = "(" + ifConditional + ")";
+		}
+		output[0] = ifConditional;
+		output[1] = jPlusAssignment;
+		return output;
+	}
 	
+	public void printCodeOutput(float[] probs){
+		System.out.println("======================================");
+		for (int i = 0; i < probs.length; i++) {
+			System.out.print(probs[i] + " ");
+		}
+		System.out.println();
+		System.out.println("--------------------------------------");
+		boolean[] output = {false,false,false,false};
+		String[] outputStrings = new String[4];
+		String s0 = "if";
+		String s1 = "answer[j] = i;";
+		String s2 = "j += 1";
+		String s3 = "}";
+		String indent = "";
+
+		String[] plan = this.determinePlanArrangement();
+		if (plan[0].length() > 0) {
+			output[0] = true;
+			s0 += plan[0] + " {";
+			indent = "    ";
+			output[3] = true;
+		}
+		
+		output[1] = true;
+		s1 = indent + s1;
+		output[2] = true;
+		s2 = indent + s2;
+		
+		if (plan[1].length() > 0) {
+			s2 = indent + "j += (" + plan[1] + ");";
+		}
+		
+		outputStrings[0] = s0;
+		outputStrings[1] = s1;
+		outputStrings[2] = s2;
+		outputStrings[3] = s3;
+		
+		/*
+		if(!this.hasChildren()){
+			if(this.costAlgo == 1){
+				output[1] = true;
+				output[2] = true;
+				for (int i = 1; i < this.rep.length; i++) {
+					String newS = "t" + i + "[o" + i + "[i]] & ";
+					//System.out.println(newS);
+					outputStrings[2] = outputStrings[2].concat(newS);
+					//System.out.println(outputStrings[2]);
+				}
+				int lastInt = this.rep.length;
+				outputStrings[2] = outputStrings[2].concat("t" + lastInt + "[o" + lastInt + "[i]]);");
+			}
+		}
+		*/
+		//print the output
+		for (int i = 0; i < 4; i++) {
+			if (output[i]) {
+				System.out.println(outputStrings[i]);
+			}
+		}
+		System.out.println("--------------------------------------");
+		System.out.println("cost = " + this.cost);
+	}
 	
 }
 
