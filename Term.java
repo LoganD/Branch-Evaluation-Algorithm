@@ -477,23 +477,6 @@ public class Term {
 		outputStrings[2] = s2;
 		outputStrings[3] = s3;
 		
-		/*
-		if(!this.hasChildren()){
-			if(this.costAlgo == 1){
-				output[1] = true;
-				output[2] = true;
-				for (int i = 1; i < this.rep.length; i++) {
-					String newS = "t" + i + "[o" + i + "[i]] & ";
-					//System.out.println(newS);
-					outputStrings[2] = outputStrings[2].concat(newS);
-					//System.out.println(outputStrings[2]);
-				}
-				int lastInt = this.rep.length;
-				outputStrings[2] = outputStrings[2].concat("t" + lastInt + "[o" + lastInt + "[i]]);");
-			}
-		}
-		*/
-		//print the output
 		for (int i = 0; i < 4; i++) {
 			if (output[i]) {
 				outputStream.println(outputStrings[i]);

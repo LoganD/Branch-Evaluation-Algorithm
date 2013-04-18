@@ -158,65 +158,6 @@ public class Main {
 			}
 			
 			outputStream.close();
-			/*
-			System.out.println(termsArrayList.get(termsArrayList.size()-1).repToString());
-			System.out.println(termsArrayList.get(termsArrayList.size()-1).costAlgo);
-			System.out.println(termsArrayList.get(termsArrayList.size()-1).cost + " " + termsArrayList.get(termsArrayList.size()-1).algoName[termsArrayList.get(termsArrayList.size()-1).costAlgo]);
-			*/
-			
-			
-			/*
-			for (Term term : termsArrayList) {
-				System.out.println("The cost is " + term.cost + " and it uses the algo: " + term.algoName[term.costAlgo]);
-			}
-			*/
-
-			/* 		writing dummy output.txt 	*/
-			/*     try {
-
-			outputStream = new PrintWriter(new FileWriter("output.txt"));
-
-		        for (String line : queryLines) {
-
-	            	outputStream.println("==================================================================");
-	                outputStream.println(line);
-	                outputStream.println("------------------------------------------------------------------");
-	                outputStream.println();
-	                outputStream.println("OPTIMAL PLAN HERE"); 
-	                outputStream.println();
-	                outputStream.println("------------------------------------------------------------------");
-	                outputStream.println("cost: XX.X");
-		        }
-		} 
-	        catch (IOException e) {
-
-				e.printStackTrace();
-		}
-	        finally {
-
-	            if (outputStream != null) {
-
-	                outputStream.close();
-	            }
-	        }
-	        //		AL elements test    
-	        System.out.println("AL test");
-	        for (String line : queryLines) {
-
-	        	System.out.println(line);
-	        }
-	        // 		Properties test     
-	        // 	NOTE : properties values of type String!    
-	        System.out.println("Properties test");
-	        System.out.println("* NOTE : properties values are of type String!");
-	        System.out.println("# : " + costProps.size());
-	        System.out.println("r = " + costProps.getProperty("r"));
-	        System.out.println("t = " + costProps.getProperty("t"));
-	        System.out.println("l = " + costProps.getProperty("l"));
-	        System.out.println("m = " + costProps.getProperty("m"));
-	        System.out.println("a = " + costProps.getProperty("a"));
-	        System.out.println("f = " + costProps.getProperty("f"));
-			*/
 		}
 	}
 }
