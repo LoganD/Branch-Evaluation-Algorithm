@@ -102,7 +102,7 @@ public class Main {
 				}
 			}
 			
-			int currentLevel = 4; //represents what row of probabilities we are working on
+			int currentLevel = 3; //represents what row of probabilities we are working on
 			ArrayList<Term> termsArrayList = Term.generateTermArray(probs[currentLevel].length);
 			Term.fillArrayCosts(termsArrayList, costProps, probs[currentLevel]);
 			

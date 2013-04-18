@@ -45,12 +45,15 @@ public class Term {
 	}
 	
 	public Float[] largestDMetric() {
-		Float[] max = this.dMetric;
+		Float[] max = new Float[2];
+		max[0] = this.dMetric[0];
+		max[1] = this.dMetric[1];
 		Term term = this;
 		ArrayList<Float[]> compares = new ArrayList<Float[]>();
 		ArrayList<Term> stackArrayList = new ArrayList<Term>();
 		stackArrayList.add(term);
-		while(stackArrayList.get(0) != null){
+		boolean keepLooping = true;
+		while(keepLooping){
 			if(stackArrayList.get(0).leftSeq != null){
 				compares.add(stackArrayList.get(0).leftSeq.dMetric);
 				stackArrayList.add(stackArrayList.get(0).leftSeq);
@@ -60,6 +63,9 @@ public class Term {
 				stackArrayList.add(stackArrayList.get(0).rightSeq);
 			}
 			stackArrayList.remove(0);
+			if(stackArrayList.size() == 0){
+				keepLooping = false;
+			}
 		}
 		for (Float[] comp : compares) {
 			if (biggerD(max, comp)){
@@ -433,46 +439,7 @@ public class Term {
 	
 	//public String[] writeNode(Term t)
 	
-	public void printCodeOutput(float[] probs){
-		System.out.println("======================================");
-		for (int i = 0; i < probs.length; i++) {
-			System.out.print(probs[i] + " ");
-		}
-		System.out.println();
-		System.out.println("--------------------------------------");
-		int[] output = {0,0,0,0};
-		String[] outputStrings = new String[4];
-		String s1 = "if(";
-		outputStrings[0] = s1;
-		String s2 = "answer[j] = i;";
-		outputStrings[1] = s2;
-		String s3 = "j += (";
-		outputStrings[2] = s3;
-		String s4 = "}";
-		outputStrings[3] = s4;
-		if(!this.hasChildren()){
-			if(this.costAlgo == 1){
-				output[1] = 1;
-				output[2] = 1;
-				for (int i = 1; i < this.rep.length; i++) {
-					String newS = "t" + i + "[o" + i + "[i]] & ";
-					//System.out.println(newS);
-					outputStrings[2] = outputStrings[2].concat(newS);
-					//System.out.println(outputStrings[2]);
-				}
-				int lastInt = this.rep.length;
-				outputStrings[2] = outputStrings[2].concat("t" + lastInt + "[o" + lastInt + "[i]]);");
-			}
-		}
-		//print the output
-		for (int i = 0; i < 4; i++) {
-			if (output[i] == 1) {
-				System.out.println(outputStrings[i]);
-			}
-		}
-		System.out.println("--------------------------------------");
-		System.out.println("cost = " + this.cost);
-	}
+	
 	
 }
 
