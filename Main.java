@@ -102,7 +102,7 @@ public class Main {
 				}
 			}
 			
-			int currentLevel = 2; //represents what row of probabilities we are working on
+			int currentLevel = 4; //represents what row of probabilities we are working on
 			ArrayList<Term> termsArrayList = Term.generateTermArray(probs[currentLevel].length);
 			Term.fillArrayCosts(termsArrayList, costProps, probs[currentLevel]);
 			
@@ -112,29 +112,40 @@ public class Main {
 					if(i == j){}
 					else{
 						if (termsArrayList.get(i).canCombine(termsArrayList.get(j))) {
-							
+							// checks if a && b is better than aUb
 							float combCost = termsArrayList.get(i).calcDoubAnd(termsArrayList.get(j), costProps, probs[currentLevel]);
 							int index = Term.calcValue(termsArrayList.get(i), termsArrayList.get(j)); //sequences are stored in the index of their binary value - 1 since the all 0 sequence has been removed
-							int[] cmbrep = Term.combinedRep(termsArrayList.get(i), termsArrayList.get(j));
+							//int[] cmbrep = Term.combinedRep(termsArrayList.get(i), termsArrayList.get(j));
 							//String cmbrepString = Term.repToString(cmbrep);
 							//System.out.println("The && is: " + combCost + " union cost is " + termsArrayList.get(index - 1).cost + " for " + termsArrayList.get(i).repToString()+ " with " + termsArrayList.get(j).repToString() + " vs " + termsArrayList.get(index - 1).repToString() + " index: " + index);
-							if (combCost < termsArrayList.get(index - 1).cost) { //checks to see if the && plan is less than the & plan
+							float compVal = combCost - termsArrayList.get(index - 1).cost;
+							if (compVal < 0 && Math.abs(compVal) > 0.001) { //checks to see if the && plan is less than the & plan
 								termsArrayList.get(index - 1).leftSeq = termsArrayList.get(i);
 								termsArrayList.get(index - 1).rightSeq = termsArrayList.get(j);
 								termsArrayList.get(index - 1).cost = combCost; //sets the new cost
 								termsArrayList.get(index - 1).costAlgo = 2;
-								System.out.println("A replacement has been made. " + termsArrayList.get(i).repToString() + " + " + termsArrayList.get(j).repToString() + " = " + termsArrayList.get(index - 1).repToString());
+								//System.out.println("A replacement has been made. " + termsArrayList.get(i).repToString() + " + " + termsArrayList.get(j).repToString() + " = " + termsArrayList.get(index - 1).repToString());
 							}
+							// checks if b&&a is better than bUa
+							float combCost2 = termsArrayList.get(j).calcDoubAnd(termsArrayList.get(i), costProps, probs[currentLevel]);
+							//int index2 = Term.calcValue(termsArrayList.get(i), termsArrayList.get(j)); //sequences are stored in the index of their binary value - 1 since the all 0 sequence has been removed
+							//System.out.println("The && is: " + combCost + " union cost is " + termsArrayList.get(index - 1).cost + " for " + termsArrayList.get(i).repToString()+ " with " + termsArrayList.get(j).repToString() + " vs " + termsArrayList.get(index - 1).repToString() + " index: " + index);
+							float compVal2 = combCost2 - termsArrayList.get(index - 1).cost;
+							
+							if (compVal2 < 0 && Math.abs(compVal2) > 0.001) { //checks to see if the && plan is less than the & plan
+								termsArrayList.get(index - 1).leftSeq = termsArrayList.get(j);
+								termsArrayList.get(index - 1).rightSeq = termsArrayList.get(i);
+								termsArrayList.get(index - 1).cost = combCost2; //sets the new cost
+								termsArrayList.get(index - 1).costAlgo = 2;
+								//System.out.println("A replacement has been made. " + termsArrayList.get(j).repToString() + " + " + termsArrayList.get(i).repToString() + " = " + termsArrayList.get(index - 1).repToString());
+							}
+							
 						}
 					}
 					
 				}
 			}
 			/*
-			for (Term term : termsArrayList) {
-				System.out.println(term.repToString() + " costs: " + term.cost);
-			}
-			
 			System.out.println(termsArrayList.get(termsArrayList.size()-1).repToString());
 			System.out.println(termsArrayList.get(termsArrayList.size()-1).costAlgo);
 			System.out.println(termsArrayList.get(termsArrayList.size()-1).cost + " " + termsArrayList.get(termsArrayList.size()-1).algoName[termsArrayList.get(termsArrayList.size()-1).costAlgo]);
