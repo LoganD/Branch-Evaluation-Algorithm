@@ -74,18 +74,7 @@ public class Term {
 		}
 		return max;
 	}
-	/*
-	 * iterativeInorder(node)
-  parentStack = empty stack
-  while not parentStack.isEmpty() or node != null
-    if node != null then
-      parentStack.push(node)
-      node = node.left
-    else
-      node = parentStack.pop()
-      visit(node)
-      node = node.right
-	 */
+
 	public boolean compareDMetrics(Term t){
 		Float[] toComp = t.largestDMetric();
 		boolean answer = biggerD(this.dMetric, toComp);
@@ -212,7 +201,7 @@ public class Term {
 			t.cost = sAnd;
 			t.costAlgo = 0;
 		}
-		//System.out.println("NoBranch is : "+ noBranch + " and sAnd is: " + sAnd + " So we choose: "+ t.algoName[t.costAlgo]);
+		//System.out.println("For " + t.repToString() + " NoBranch is : "+ noBranch + " and sAnd is: " + sAnd + " So we choose: "+ t.algoName[t.costAlgo]);
 		t.calcCMetric(props, select);
 		t.calcDMetric(props, select);
 	}
@@ -275,37 +264,7 @@ public class Term {
 		cost += product * Float.valueOf(props.getProperty("a"));
 		return cost;
 	}
-	/*
-	public float calcDoubAnd(float costPlan2, Properties props, float[] select){
-		int k = 0;
-		for (int i = 0; i < this.rep.length; i++) {
-			if (this.rep[i] == 1) {
-				k++;
-			}
-		}
-		float fcost = k * Float.valueOf(props.getProperty("r"));
-		fcost += (k-1)*Float.valueOf(props.getProperty("l"));
-		fcost += k*Float.valueOf(props.getProperty("f"));
-		fcost += Float.valueOf(props.getProperty("t"));
-		float q = 0;
-		float product = 1.0f;
-		for (int i = 0; i < select.length; i++) {
-			if (this.rep[i] == 1) {
-				product = product * select[i];
-			}	
-		}
-		if (product > 0.5){
-			q = (1.0f - product);
-		}
-		else {
-			q = product;
-		}
-		float planCost = fcost;
-		planCost += q * Float.valueOf(props.getProperty("m"));
-		planCost += product * costPlan2;
-		return planCost;
-	}
-	*/
+
 	public float calcDoubAnd(Term t, Properties props, float[] select){
 		int k = 0;
 		this.numVars();
