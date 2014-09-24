@@ -1,4 +1,4 @@
-dbCostAlgo
+Branch Evaluation Algorithm
 ==========
 
 Database System Implementation COMS 4112 Spring
