@@ -2,11 +2,11 @@ Branch Evaluation Algorithm
 ==========
 
 Database System Implementation COMS 4112 Spring
-Project 2 Phase 2
+Project 2
 Java Implementation of the Branch Evaluation Algorithm
 
-Logan Donovan lrd2127
-Grigoriy Arashkovich ga2284
+This Algorithm is described in this paper: http://www.cs.columbia.edu/~kar/pubsk/selections.pdf
+The performance of memory is affected by branch misprediction penalities when executing query plans. The idea here is to optimize the query plan selection based on its potential performance. 
 
 The following files are included:
 
